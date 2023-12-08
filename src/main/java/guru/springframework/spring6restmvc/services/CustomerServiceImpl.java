@@ -10,7 +10,7 @@ import java.util.*;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final Map<UUID, Customer> customerMap;
+    private Map<UUID, Customer> customerMap;
 
     public CustomerServiceImpl() {
         Customer customer1 = Customer.builder()

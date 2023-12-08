@@ -11,11 +11,11 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class BearServiceImpl implements BeerService {
+public class BeerServiceImpl implements BeerService {
 
     private final Map<UUID, Beer> beerMap;
 
-    public BearServiceImpl(){
+    public BeerServiceImpl(){
         this.beerMap = new HashMap<>();
 
         Beer beer1 = Beer.builder()

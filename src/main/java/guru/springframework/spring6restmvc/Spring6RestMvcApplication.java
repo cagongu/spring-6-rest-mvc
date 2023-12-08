@@ -11,9 +11,7 @@ import java.util.UUID;
 public class Spring6RestMvcApplication {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(Spring6RestMvcApplication.class, args);
-        BeerController controller = ctx.getBean(BeerController.class);
-        System.out.println(controller.getBeerById(UUID.randomUUID()));
+        SpringApplication.run(Spring6RestMvcApplication.class, args);
     }
 
 }

@@ -9,4 +9,6 @@ public interface BeerService {
     Beer getBearById(UUID id);
 
     List<Beer> listBeer();
+
+    Beer saveNewBeer(Beer beer);
 }

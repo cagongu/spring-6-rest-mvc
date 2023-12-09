@@ -15,9 +15,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/beer")
+@RequestMapping("/api/v1/beers")
 public class BeerController {
     private final BeerService beerService;
+
+    @PutMapping("{beerId}")
+    public ResponseEntity<Beer> updateById(@PathVariable("beerId") UUID id,@RequestBody Beer beer){
+
+        beerService.updateBeerById(id, beer);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
     @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
@@ -26,7 +35,7 @@ public class BeerController {
         Beer savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
+        headers.add("Location", "/api/v1/beers/" + savedBeer.getId().toString());
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }

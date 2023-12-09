@@ -66,4 +66,16 @@ public class CustomerServiceImpl implements CustomerService {
 
         return saveCustomer;
     }
+
+    @Override
+    public void updateCustomerById(UUID id, Customer customer) {
+
+        Customer existing = customerMap.get(id);
+        existing.setName(customer.getName());
+        existing.setVersion(customer.getVersion());
+        existing.setUpdateDate(customer.getUpdateDate());
+        existing.setCreatedDate(customer.getCreatedDate());
+
+        customerMap.put(id, existing);
+    }
 }

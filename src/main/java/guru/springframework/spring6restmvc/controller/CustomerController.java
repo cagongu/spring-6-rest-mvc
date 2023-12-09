@@ -1,6 +1,5 @@
 package guru.springframework.spring6restmvc.controller;
 
-
 import guru.springframework.spring6restmvc.model.Customer;
 import guru.springframework.spring6restmvc.services.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +17,16 @@ import java.util.UUID;
 public class CustomerController {
     private final CustomerService customerService;
 
+    @PutMapping("{customerId}")
+    public ResponseEntity<Customer> updateById(@PathVariable("customerId") UUID id, @RequestBody Customer customer) {
+
+        customerService.updateCustomerById(id, customer);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @PostMapping
-    public ResponseEntity<Customer> handlePost(@RequestBody Customer customer){
+    public ResponseEntity<Customer> handlePost(@RequestBody Customer customer) {
         Customer savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();

@@ -53,4 +53,9 @@ public class UserServiceImpl implements UserService {
         mapUser.put(id, user);
 
     }
+
+    @Override
+    public void deleteUserById(UUID id) {
+        mapUser.remove(id);
+    }
 }

@@ -18,6 +18,14 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
+    @DeleteMapping("{userId}")
+    public ResponseEntity<User> deleteById(@PathVariable("userId") UUID id){
+
+        userService.deleteUserById(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @PutMapping("{userId}")
     public ResponseEntity<User> updateById(@PathVariable("userId") UUID id,@RequestBody User user){
 

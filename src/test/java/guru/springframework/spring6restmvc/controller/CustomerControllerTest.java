@@ -1,6 +1,6 @@
 package guru.springframework.spring6restmvc.controller;
 
-import guru.springframework.spring6restmvc.services.BeerService;
+import guru.springframework.spring6restmvc.services.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -8,26 +8,26 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.UUID;
 
-@WebMvcTest(BeerController.class)
-class BeerControllerTest {
+@WebMvcTest(CustomerController.class)
+class CustomerControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    BeerService beerService;
+    CustomerService customerService;
+
 
     @Test
-    void getBeerById() throws Exception {
-        mockMvc.perform(get("/api/v1/beers/" + UUID.randomUUID())
-                        .accept(MediaType.APPLICATION_JSON))
+    void getCustomerById() throws Exception{
+        mockMvc.perform(get("/api/v1/customers/" + UUID.randomUUID())
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
-//        System.out.println(controller.getBeerById(UUID.randomUUID()));
     }
 }

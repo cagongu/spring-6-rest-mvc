@@ -42,4 +42,15 @@ public class UserServiceImpl implements UserService {
         mapUser.put(saveUser.getId(), user);
         return saveUser;
     }
+
+    @Override
+    public void updateUserById(UUID id, User user) {
+
+        User existing = mapUser.get(id);
+        existing.setName(user.getName());
+        existing.setYears(user.getYears());
+
+        mapUser.put(id, user);
+
+    }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
 @RestController
 public class CustomerController {
@@ -30,7 +30,7 @@ public class CustomerController {
         Customer savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
+        headers.add("Location", "/api/v1/customers/" + savedCustomer.getId().toString());
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }

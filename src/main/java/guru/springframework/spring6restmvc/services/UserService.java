@@ -13,4 +13,6 @@ public interface UserService {
     List<User> getAllUsers();
 
     User saveNewCustomer(User user);
+
+    void updateUserById(UUID id, User user);
 }

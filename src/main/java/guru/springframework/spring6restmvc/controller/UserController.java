@@ -13,17 +13,25 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @PutMapping("{userId}")
+    public ResponseEntity<User> updateById(@PathVariable("userId") UUID id,@RequestBody User user){
+
+        userService.updateUserById(id, user);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     @RequestMapping()
     public ResponseEntity<User> handlerUser(@RequestBody User user){
         User SaveNewUser = userService.saveNewCustomer(user);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/user/" + SaveNewUser.getId().toString());
+        headers.add("Location", "/api/v1/users/" + SaveNewUser.getId().toString());
 
         return  new  ResponseEntity<> (headers, HttpStatus.CREATED);
     }

@@ -18,8 +18,16 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
+    @PatchMapping("{userId}")
+    public ResponseEntity<User> updatePatchById(@PathVariable("userId") UUID id, @RequestBody User user) {
+
+        userService.patchUserById(id, user);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("{userId}")
-    public ResponseEntity<User> deleteById(@PathVariable("userId") UUID id){
+    public ResponseEntity<User> deleteById(@PathVariable("userId") UUID id) {
 
         userService.deleteUserById(id);
 
@@ -27,7 +35,7 @@ public class UserController {
     }
 
     @PutMapping("{userId}")
-    public ResponseEntity<User> updateById(@PathVariable("userId") UUID id,@RequestBody User user){
+    public ResponseEntity<User> updateById(@PathVariable("userId") UUID id, @RequestBody User user) {
 
         userService.updateUserById(id, user);
 
@@ -35,13 +43,13 @@ public class UserController {
     }
 
     @RequestMapping()
-    public ResponseEntity<User> handlerUser(@RequestBody User user){
+    public ResponseEntity<User> handlerUser(@RequestBody User user) {
         User SaveNewUser = userService.saveNewCustomer(user);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/users/" + SaveNewUser.getId().toString());
 
-        return  new  ResponseEntity<> (headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -50,7 +58,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "{UserId}", method = RequestMethod.GET)
-    public User getUserById(@PathVariable("UserId") UUID UserId){
+    public User getUserById(@PathVariable("UserId") UUID UserId) {
         return userService.getUserById(UserId);
     }
 }

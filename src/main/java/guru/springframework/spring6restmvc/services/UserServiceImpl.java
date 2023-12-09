@@ -2,6 +2,7 @@ package guru.springframework.spring6restmvc.services;
 
 import guru.springframework.spring6restmvc.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -57,5 +58,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(UUID id) {
         mapUser.remove(id);
+    }
+
+    @Override
+    public void patchUserById(UUID id, User user) {
+        User existing = mapUser.get(id);
+
+        if(StringUtils.hasText(user.getName())){
+            existing.setName(user.getName());
+        }
+
+        if (user.getYears() != existing.getYears()) {
+            existing.setYears(user.getYears());
+        }
     }
 }

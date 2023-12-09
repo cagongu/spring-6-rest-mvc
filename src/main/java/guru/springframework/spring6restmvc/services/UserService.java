@@ -16,4 +16,6 @@ public interface UserService {
     void updateUserById(UUID id, User user);
 
     void deleteUserById(UUID id);
+
+    void patchUserById(UUID id, User user);
 }

@@ -11,18 +11,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(CustomerController.class)
 class CustomerControllerTest {
-
     @Autowired
     MockMvc mockMvc;
 
@@ -32,14 +28,25 @@ class CustomerControllerTest {
     CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
 
     @Test
-    void getCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().get(0);
+    void testGetAllCustomer() throws Exception {
+        given(customerService.getAllCustomers()).willReturn(customerServiceImpl.getAllCustomers());
 
-        given(customerService.getCustomerById(any(UUID.class))).willReturn(testCustomer);
-
-        mockMvc.perform(get("/api/v1/customers/" + testCustomer.getId())
+        mockMvc.perform(get("/api/v1/customers")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()", is(3)));
     }
+
+    @Test
+    void testGetCustomerById() throws Exception {
+        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+
+        given(customerService.getCustomerById(customer.getId())).willReturn(customer);
+
+        mockMvc.perform(get("/api/v1/customers/" + customer.getId()));
+
+
+    }
+
 }

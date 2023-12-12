@@ -18,9 +18,16 @@ public class UserServiceImpl implements UserService {
                 .years(2003)
                 .build();
 
+        User user2 = User.builder()
+                .id(UUID.randomUUID())
+                .name("thai2")
+                .years(2003)
+                .build();
+
         mapUser = new HashMap<>();
 
         mapUser.put(user1.getId(), user1);
+        mapUser.put(user2.getId(), user2);
     }
 
     @Override

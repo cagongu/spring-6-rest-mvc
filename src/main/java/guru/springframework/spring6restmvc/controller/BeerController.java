@@ -16,10 +16,9 @@ import java.util.UUID;
 @RestController
 @Slf4j
 public class BeerController {
-    private final BeerService beerService;
     public static final String BEER_PATH = "/api/v1/beer";
-    public static final String BEER_PATH_ID = BEER_PATH + "/{{beerId}";
-
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
+    private final BeerService beerService;
 
     @PatchMapping(BEER_PATH_ID)
     public ResponseEntity<Beer> updateBeerPatchById(@PathVariable("beerId") UUID id, @RequestBody Beer beer) {
@@ -47,7 +46,6 @@ public class BeerController {
 
 
     @PostMapping(BEER_PATH)
-    //@RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Beer> handlePost(@RequestBody Beer beer) {
 
         Beer savedBeer = beerService.saveNewBeer(beer);
@@ -58,12 +56,12 @@ public class BeerController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @GetMapping(BEER_PATH)
+    @GetMapping(value = BEER_PATH)
     public List<Beer> listBeer() {
         return beerService.listBeer();
     }
 
-    @GetMapping(BEER_PATH_ID)
+    @GetMapping(value = BEER_PATH_ID)
     public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
         log.debug("Get Beer by Id - in controller 1234 asdf");
         return beerService.getBearById(beerId);

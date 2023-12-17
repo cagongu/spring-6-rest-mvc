@@ -14,11 +14,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
+    private String name;
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 36, columnDefinition = "varchar", updatable = false, nullable = false)
-    private String name;
     private UUID id;
     @Version
     private Integer version;

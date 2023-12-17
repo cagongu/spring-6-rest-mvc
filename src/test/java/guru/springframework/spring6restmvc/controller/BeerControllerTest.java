@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -132,7 +133,7 @@ class BeerControllerTest {
     void testGetBeerByIdNotFound() throws Exception {
         Beer beer = beerServiceImpl.listBeer().get(0);
 
-        given(beerService.getBearById(beer.getId())).willReturn(beer);
+        given(beerService.getBearById(beer.getId())).willReturn(Optional.of(beer));
 
         mockMvc.perform(get(BeerController.BEER_PATH_ID, beer.getId())
                         .accept(MediaType.APPLICATION_JSON))

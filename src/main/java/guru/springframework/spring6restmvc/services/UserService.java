@@ -1,21 +1,21 @@
 package guru.springframework.spring6restmvc.services;
 
-import guru.springframework.spring6restmvc.model.User;
+import guru.springframework.spring6restmvc.model.UserDTO;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
 
-    User getUserById(UUID uuid);
+    UserDTO getUserById(UUID uuid);
 
-    List<User> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-    User saveNewCustomer(User user);
+    UserDTO saveNewCustomer(UserDTO user);
 
-    void updateUserById(UUID id, User user);
+    void updateUserById(UUID id, UserDTO user);
 
     void deleteUserById(UUID id);
 
-    void patchUserById(UUID id, User user);
+    void patchUserById(UUID id, UserDTO user);
 }

@@ -1,7 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
 
-import guru.springframework.spring6restmvc.model.User;
+import guru.springframework.spring6restmvc.model.UserDTO;
 import guru.springframework.spring6restmvc.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PatchMapping(USER_PATH_ID)
-    public ResponseEntity<User> updatePatchById(@PathVariable("userId") UUID id, @RequestBody User user) {
+    public ResponseEntity<UserDTO> updatePatchById(@PathVariable("userId") UUID id, @RequestBody UserDTO user) {
 
         userService.patchUserById(id, user);
 
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping(USER_PATH_ID)
-    public ResponseEntity<User> deleteById(@PathVariable("userId") UUID id) {
+    public ResponseEntity<UserDTO> deleteById(@PathVariable("userId") UUID id) {
 
         userService.deleteUserById(id);
 
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PutMapping(USER_PATH_ID)
-    public ResponseEntity<User> updateById(@PathVariable("userId") UUID id, @RequestBody User user) {
+    public ResponseEntity<UserDTO> updateById(@PathVariable("userId") UUID id, @RequestBody UserDTO user) {
 
         userService.updateUserById(id, user);
 
@@ -45,8 +45,8 @@ public class UserController {
     }
 
     @PostMapping(USER_PATH)
-    public ResponseEntity<User> handlerUser(@RequestBody User user) {
-        User SaveNewUser = userService.saveNewCustomer(user);
+    public ResponseEntity<UserDTO> handlerUser(@RequestBody UserDTO user) {
+        UserDTO SaveNewUser = userService.saveNewCustomer(user);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", USER_PATH + "/" + SaveNewUser.getId().toString());
@@ -55,12 +55,12 @@ public class UserController {
     }
 
     @GetMapping(USER_PATH)
-    public List<User> getAllUser() {
+    public List<UserDTO> getAllUser() {
         return userService.getAllUsers();
     }
 
     @GetMapping(USER_PATH_ID)
-    public User getUserById(@PathVariable("userId") UUID userId) {
+    public UserDTO getUserById(@PathVariable("userId") UUID userId) {
         return userService.getUserById(userId);
     }
 }

@@ -1,7 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springframework.spring6restmvc.model.User;
+import guru.springframework.spring6restmvc.model.UserDTO;
 import guru.springframework.spring6restmvc.services.UserService;
 import guru.springframework.spring6restmvc.services.UserServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -41,13 +41,13 @@ class UserControllerTest {
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<User> userArgumentCaptor;
+    ArgumentCaptor<UserDTO> userArgumentCaptor;
 
     UserServiceImpl userServiceImpl = new UserServiceImpl();
 
     @Test
     void testPatchUser() throws Exception {
-        User user = userServiceImpl.getAllUsers().get(0);
+        UserDTO user = userServiceImpl.getAllUsers().get(0);
 
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", "ho phuc thai");
@@ -66,7 +66,7 @@ class UserControllerTest {
 
     @Test
     void testDeleteUser() throws Exception {
-        User user = userServiceImpl.getAllUsers().get(0);
+        UserDTO user = userServiceImpl.getAllUsers().get(0);
 
         mockMvc.perform(delete(UserController.USER_PATH_ID, user.getId())
                         .accept(MediaType.APPLICATION_JSON))
@@ -80,7 +80,7 @@ class UserControllerTest {
 
     @Test
     void testUpdateUser() throws Exception {
-        User user = userServiceImpl.getAllUsers().get(0);
+        UserDTO user = userServiceImpl.getAllUsers().get(0);
 
         mockMvc.perform(put(UserController.USER_PATH_ID, user.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -88,17 +88,17 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(userService).updateUserById(any(UUID.class), any(User.class));
+        verify(userService).updateUserById(any(UUID.class), any(UserDTO.class));
 
     }
 
     @Test
     void testCreateNewUser() throws Exception {
-        User user = userServiceImpl.getAllUsers().get(0);
+        UserDTO user = userServiceImpl.getAllUsers().get(0);
 
         user.setName(null);
 
-        given(userService.saveNewCustomer(any(User.class)))
+        given(userService.saveNewCustomer(any(UserDTO.class)))
                 .willReturn(userServiceImpl.getAllUsers().get(1));
 
         mockMvc.perform(post(UserController.USER_PATH)
@@ -121,8 +121,16 @@ class UserControllerTest {
     }
 
     @Test
+    void getByIdNotFound() throws Exception{
+        given(userService.getUserById(any(UUID.class))).willThrow(NotFoundException.class);
+
+        mockMvc.perform(get(UserController.USER_PATH_ID, UUID.randomUUID()))
+                .andExpect(status().isNotFound()) ;
+    }
+
+    @Test
     void getUserById() throws Exception {
-        User user = userServiceImpl.getAllUsers().get(0);
+        UserDTO user = userServiceImpl.getAllUsers().get(0);
 
         given(userService.getUserById(user.getId())).willReturn(user);
 

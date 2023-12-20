@@ -16,7 +16,7 @@ public class BeerServiceImpl implements BeerService {
 
     private final Map<UUID, BeerDTO> beerMap;
 
-    public BeerServiceImpl(){
+    public BeerServiceImpl() {
         this.beerMap = new HashMap<>();
 
         BeerDTO beer1 = BeerDTO.builder()
@@ -113,10 +113,10 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void patchBeerById(UUID id, BeerDTO beer) {
+    public Optional<BeerDTO> patchBeerById(UUID id, BeerDTO beer) {
         BeerDTO existing = beerMap.get(id);
 
-        if(StringUtils.hasText(beer.getBeerName())){
+        if (StringUtils.hasText(beer.getBeerName())) {
             existing.setBeerName(beer.getBeerName());
         }
 
@@ -128,13 +128,13 @@ public class BeerServiceImpl implements BeerService {
             existing.setPrice(beer.getPrice());
         }
 
-        if (beer.getQuantityOnHand() != null){
+        if (beer.getQuantityOnHand() != null) {
             existing.setQuantityOnHand(beer.getQuantityOnHand());
         }
 
         if (StringUtils.hasText(beer.getUpc())) {
             existing.setUpc(beer.getUpc());
         }
-
+        return Optional.of(existing);
     }
 }

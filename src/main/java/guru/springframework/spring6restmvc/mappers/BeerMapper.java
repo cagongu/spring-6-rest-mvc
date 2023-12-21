@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 @Mapper
-@Component
 public interface BeerMapper {
     Beer beerDtoToBeer(BeerDTO dto);
     BeerDTO beerToBeerDto(Beer beer);

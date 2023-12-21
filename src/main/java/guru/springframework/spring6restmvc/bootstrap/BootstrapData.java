@@ -1,12 +1,13 @@
 package guru.springframework.spring6restmvc.bootstrap;
 
+import guru.springframework.spring6restmvc.entities.Account;
 import guru.springframework.spring6restmvc.entities.Beer;
 import guru.springframework.spring6restmvc.entities.Customer;
-import guru.springframework.spring6restmvc.mappers.BeerMapper;
 import guru.springframework.spring6restmvc.model.BeerStyle;
 
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import guru.springframework.spring6restmvc.repositories.CustomerRepository;
+import guru.springframework.spring6restmvc.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,17 +18,35 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 public class BootstrapData implements CommandLineRunner {
-    private final BeerRepository beerRepository;
+    private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
+    private final BeerRepository beerRepository;
 
     @Override
     public void run(String... args) {
-        loadBeerData();
+        loadUserData();
         loadCustomerData();
+        loadBeerData();
+    }
+
+    private void loadUserData() {
+        if (userRepository.count() == 0) {
+            Account account1 = Account.builder()
+                    .name("thai")
+                    .years(2003)
+                    .build();
+
+            Account account2 = Account.builder()
+                    .name("thai2")
+                    .years(2003)
+                    .build();
+            userRepository.save(account1);
+            userRepository.save(account2);
+        }
     }
 
     private void loadCustomerData() {
-        if (customerRepository.count() == 0){
+        if (customerRepository.count() == 0) {
             Customer customer1 = Customer.builder()
                     .name("Customer 1")
                     .createdDate(LocalDateTime.now())
@@ -52,7 +71,7 @@ public class BootstrapData implements CommandLineRunner {
     }
 
     private void loadBeerData() {
-        if (beerRepository.count() == 0){
+        if (beerRepository.count() == 0) {
             Beer beer1 = Beer.builder()
                     .beerName("Galaxy Cat")
                     .beerStyle(BeerStyle.PALE_ALE)
@@ -87,6 +106,5 @@ public class BootstrapData implements CommandLineRunner {
             beerRepository.save(beer2);
             beerRepository.save(beer3);
         }
-
     }
 }

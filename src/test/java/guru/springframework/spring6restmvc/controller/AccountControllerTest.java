@@ -1,9 +1,9 @@
 package guru.springframework.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springframework.spring6restmvc.model.UserDTO;
-import guru.springframework.spring6restmvc.services.UserService;
-import guru.springframework.spring6restmvc.services.UserServiceImpl;
+import guru.springframework.spring6restmvc.model.AccountDTO;
+import guru.springframework.spring6restmvc.services.AccountService;
+import guru.springframework.spring6restmvc.services.AccountServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,14 +26,14 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
-class UserControllerTest {
+@WebMvcTest(AccountController.class)
+class AccountControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    AccountService accountService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -41,24 +42,24 @@ class UserControllerTest {
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<UserDTO> userArgumentCaptor;
+    ArgumentCaptor<AccountDTO> userArgumentCaptor;
 
-    UserServiceImpl userServiceImpl = new UserServiceImpl();
+    AccountServiceImpl userServiceImpl = new AccountServiceImpl();
 
     @Test
     void testPatchUser() throws Exception {
-        UserDTO user = userServiceImpl.getAllUsers().get(0);
+        AccountDTO user = userServiceImpl.getAllUsers().get(0);
 
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", "ho phuc thai");
 
-        mockMvc.perform(patch(UserController.USER_PATH_ID, user.getId())
+        mockMvc.perform(patch(AccountController.USER_PATH_ID, user.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userMap)))
                 .andExpect(status().isNoContent());
 
-        verify(userService).patchUserById(uuidArgumentCaptor.capture(), userArgumentCaptor.capture());
+        verify(accountService).patchUserById(uuidArgumentCaptor.capture(), userArgumentCaptor.capture());
 
         assertThat(user.getId()).isEqualTo(uuidArgumentCaptor.getValue());
         assertThat(userMap.get("name")).isEqualTo(userArgumentCaptor.getValue().getName());
@@ -66,13 +67,15 @@ class UserControllerTest {
 
     @Test
     void testDeleteUser() throws Exception {
-        UserDTO user = userServiceImpl.getAllUsers().get(0);
+        AccountDTO user = userServiceImpl.getAllUsers().get(0);
 
-        mockMvc.perform(delete(UserController.USER_PATH_ID, user.getId())
+        given(accountService.deleteUserById(any())).willReturn(true);
+
+        mockMvc.perform(delete(AccountController.USER_PATH_ID, user.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(userService).deleteUserById(uuidArgumentCaptor.capture());
+        verify(accountService).deleteUserById(uuidArgumentCaptor.capture());
 
         assertThat(user.getId()).isEqualTo(uuidArgumentCaptor.getValue());
 
@@ -80,28 +83,30 @@ class UserControllerTest {
 
     @Test
     void testUpdateUser() throws Exception {
-        UserDTO user = userServiceImpl.getAllUsers().get(0);
+        AccountDTO user = userServiceImpl.getAllUsers().get(0);
 
-        mockMvc.perform(put(UserController.USER_PATH_ID, user.getId())
+        given(accountService.updateUserById(any(), any())).willReturn(Optional.of(user));
+
+        mockMvc.perform(put(AccountController.USER_PATH_ID, user.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(userService).updateUserById(any(UUID.class), any(UserDTO.class));
+        verify(accountService).updateUserById(any(UUID.class), any(AccountDTO.class));
 
     }
 
     @Test
     void testCreateNewUser() throws Exception {
-        UserDTO user = userServiceImpl.getAllUsers().get(0);
+        AccountDTO user = userServiceImpl.getAllUsers().get(0);
 
         user.setName(null);
 
-        given(userService.saveNewCustomer(any(UserDTO.class)))
+        given(accountService.saveNewCustomer(any(AccountDTO.class)))
                 .willReturn(userServiceImpl.getAllUsers().get(1));
 
-        mockMvc.perform(post(UserController.USER_PATH)
+        mockMvc.perform(post(AccountController.USER_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
@@ -111,9 +116,9 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() throws Exception {
-        given(userService.getAllUsers()).willReturn(userServiceImpl.getAllUsers());
+        given(accountService.getAllUsers()).willReturn(userServiceImpl.getAllUsers());
 
-        mockMvc.perform(get(UserController.USER_PATH)
+        mockMvc.perform(get(AccountController.USER_PATH)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -122,19 +127,19 @@ class UserControllerTest {
 
     @Test
     void getByIdNotFound() throws Exception{
-        given(userService.getUserById(any(UUID.class))).willThrow(NotFoundException.class);
+        given(accountService.getUserById(any(UUID.class))).willThrow(NotFoundException.class);
 
-        mockMvc.perform(get(UserController.USER_PATH_ID, UUID.randomUUID()))
+        mockMvc.perform(get(AccountController.USER_PATH_ID, UUID.randomUUID()))
                 .andExpect(status().isNotFound()) ;
     }
 
     @Test
     void getUserById() throws Exception {
-        UserDTO user = userServiceImpl.getAllUsers().get(0);
+        AccountDTO user = userServiceImpl.getAllUsers().get(0);
 
-        given(userService.getUserById(user.getId())).willReturn(user);
+        given(accountService.getUserById(user.getId())).willReturn(Optional.of(user));
 
-        mockMvc.perform(get(UserController.USER_PATH_ID, user.getId())
+        mockMvc.perform(get(AccountController.USER_PATH_ID, user.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

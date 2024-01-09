@@ -31,6 +31,7 @@ public class Customer {
     @Column(length = 50)
     private String name;
 
+//    @NotBlank
     @Column(length = 255)
     private String email;
 

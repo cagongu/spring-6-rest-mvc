@@ -40,7 +40,7 @@ public class Beer {
     @NotNull
     private BeerStyle beerStyle;
 
-    @NotBlank
+    @NotNull
     @NotBlank
     @Size(max = 255)
     private String upc;

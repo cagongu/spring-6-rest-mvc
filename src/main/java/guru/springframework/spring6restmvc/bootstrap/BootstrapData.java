@@ -75,7 +75,7 @@ public class BootstrapData implements CommandLineRunner {
             Beer beer1 = Beer.builder()
                     .beerName("Galaxy Cat")
                     .beerStyle(BeerStyle.PALE_ALE)
-                    .upc("12356")
+                    .upc("123567")
                     .price(new BigDecimal("12.99"))
                     .quantityOnHand(122)
                     .createdDate(LocalDateTime.now())

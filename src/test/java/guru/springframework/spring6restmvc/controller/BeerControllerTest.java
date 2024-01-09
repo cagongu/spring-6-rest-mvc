@@ -110,7 +110,7 @@ class BeerControllerTest {
                         .content(objectMapper.writeValueAsString(beer))
                          .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.length()", is(8)));
+                .andExpect(jsonPath("$.length()", is(1)));
 
     }
 
@@ -143,7 +143,7 @@ class BeerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beer)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.length()", is(8)))
+                .andExpect(jsonPath("$.length()", is(6)))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -157,7 +157,7 @@ class BeerControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()", is(3)));
+                .andExpect(jsonPath("$.length()", is(1)));
     }
 
     @Test

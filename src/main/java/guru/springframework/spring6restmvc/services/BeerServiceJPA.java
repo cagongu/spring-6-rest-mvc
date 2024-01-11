@@ -7,6 +7,7 @@ import guru.springframework.spring6restmvc.model.BeerStyle;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +24,9 @@ public class BeerServiceJPA implements BeerService {
     private final BeerMapper beerMapper;
     private final BeerRepository repository;
 
+    private static final int DEFAULT_PAGE = 0;
+    private static final int DEFAULT_PAGE_SIZE = 25;
+
     @Override
     public Optional<BeerDTO> getBearById(UUID id) {
         return Optional.ofNullable(beerMapper.beerToBeerDto(repository.findById(id)
@@ -31,6 +35,9 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public List<BeerDTO> listBeer(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
+
+        PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);
+
         List<Beer> beerList;
 
         if (StringUtils.hasText(beerName) && beerStyle == null) {
@@ -43,13 +50,37 @@ public class BeerServiceJPA implements BeerService {
             beerList = repository.findAll();
         }
 
-        if(showInventory != null && !showInventory){
+        if (showInventory != null && !showInventory) {
             beerList.forEach(beer -> beer.setQuantityOnHand(null));
         }
 
         return beerList.stream()
                 .map(beerMapper::beerToBeerDto)
                 .collect(Collectors.toList());
+    }
+
+    public PageRequest buildPageRequest(Integer pageNumber, Integer pageSize) {
+        int queryPageNumber;
+        int queryPageSize;
+
+        if (pageNumber != null && pageNumber > 0) {
+            queryPageNumber = pageNumber - 1;
+        } else {
+            queryPageNumber = DEFAULT_PAGE;
+        }
+
+        if (pageSize == null) {
+            queryPageSize = DEFAULT_PAGE_SIZE;
+        } else {
+            if (pageSize > 1000) {
+                queryPageSize = 1000 ;
+
+            } else {
+                queryPageSize = pageSize;
+            }
+        }
+
+        return PageRequest.of(queryPageNumber, queryPageSize);
     }
 
     public List<Beer> listBeerByNameAndStyle(String beerName, BeerStyle beerStyle) {

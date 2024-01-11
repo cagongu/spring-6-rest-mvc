@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface BeerService {
     Optional<BeerDTO> getBearById(UUID id);
 
-    List<BeerDTO> listBeer(String beerName, BeerStyle beerStyle, Boolean showInventory);
+    List<BeerDTO> listBeer(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize);
 
     BeerDTO saveNewBeer(BeerDTO beer);
 

@@ -30,7 +30,7 @@ public class BeerServiceJPA implements BeerService {
     }
 
     @Override
-    public List<BeerDTO> listBeer(String beerName, BeerStyle beerStyle, Boolean showInventory) {
+    public List<BeerDTO> listBeer(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize) {
         List<Beer> beerList;
 
         if (StringUtils.hasText(beerName) && beerStyle == null) {

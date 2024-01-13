@@ -152,15 +152,14 @@ class BeerControllerTest {
 
     @Test
     void testListBeers() throws Exception {
-        given(beerService.listBeer(any(), any(), any(), any(), any()))
-                .willReturn(beerServiceImpl.listBeer(null, null, false, 2, 25));
+        given(beerService.listBeer(any(), any() , any(), any(), any()))
+                .willReturn(beerServiceImpl.listBeer(null, null, false, null, null));
 
         mockMvc.perform(get(BeerController.BEER_PATH)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.content.length()", is(3)))
-                .andDo(print());
+                .andExpect(jsonPath("$.content.length()", is(3)));
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class BeerOrderRepositoryTest {
@@ -29,6 +30,7 @@ class BeerOrderRepositoryTest {
         beer = beerRepository.findAll().get(0);
     }
 
+    @Transactional
     @Test
     void testBeerOrders(){
         BeerOrder beerOrder = BeerOrder.builder()
@@ -36,7 +38,7 @@ class BeerOrderRepositoryTest {
                 .customer(customer)
                 .build();
 
-        BeerOrder saveBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
+        BeerOrder saveBeerOrder = beerOrderRepository.save(beerOrder);
 
         System.out.println(saveBeerOrder.getCustomerRef());
     }

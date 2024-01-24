@@ -1,6 +1,7 @@
 package guru.springframework.spring6restmvc.repositories;
 
 import guru.springframework.spring6restmvc.entities.Beer;
+import guru.springframework.spring6restmvc.entities.BeerOrder;
 import guru.springframework.spring6restmvc.entities.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,5 @@ class CategoryRepositoryTest {
         Beer saveBeer = beerRepository.save(testBeer);
 
         System.out.println(saveBeer.getBeerName());
-
     }
 }

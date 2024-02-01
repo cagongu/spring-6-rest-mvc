@@ -42,11 +42,11 @@ public class BeerServiceJPA implements BeerService {
 
         Page<Beer> beerPage;
 
-        if(StringUtils.hasText(beerName) && beerStyle == null) {
+        if (StringUtils.hasText(beerName) && beerStyle == null) {
             beerPage = listBeerByName(beerName, pageRequest);
-        } else if (!StringUtils.hasText(beerName) && beerStyle != null){
+        } else if (!StringUtils.hasText(beerName) && beerStyle != null) {
             beerPage = listBeerByStyle(beerStyle, pageRequest);
-        } else if (StringUtils.hasText(beerName) && beerStyle != null){
+        } else if (StringUtils.hasText(beerName) && beerStyle != null) {
             beerPage = listBeerByNameAndStyle(beerName, beerStyle, pageRequest);
         } else {
             beerPage = repository.findAll(pageRequest);
@@ -110,9 +110,11 @@ public class BeerServiceJPA implements BeerService {
             foundBeer.setBeerStyle(beer.getBeerStyle());
             foundBeer.setUpc(beer.getUpc());
             foundBeer.setPrice(beer.getPrice());
+            foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
             atomicReference.set(Optional.of(beerMapper
                     .beerToBeerDto(repository.save(foundBeer))));
         }, () -> atomicReference.set(Optional.empty()));
+
         return atomicReference.get();
     }
 

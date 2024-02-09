@@ -78,6 +78,7 @@ class CustomerControllerTest {
         given(customerService.deleteCustomerById(any())).willReturn(true);
 
         mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID, customer.getId())
+                        .with(httpBasic("user1", "password"))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -93,6 +94,7 @@ class CustomerControllerTest {
         given(customerService.updateCustomerById(any(), any())).willReturn(Optional.of(CustomerDTO.builder().build()));
 
         mockMvc.perform(put(CustomerController.CUSTOMER_PATH_ID, customer.getId())
+                        .with(httpBasic("user1", "password"))
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customer))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -110,6 +112,7 @@ class CustomerControllerTest {
                 .willReturn(customerServiceImpl.getAllCustomers().get(1));
 
         mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
+                        .with(httpBasic("user1", "password"))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customer)))

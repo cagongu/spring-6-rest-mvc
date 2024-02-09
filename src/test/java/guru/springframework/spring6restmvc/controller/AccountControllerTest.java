@@ -23,6 +23,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -54,6 +55,7 @@ class AccountControllerTest {
         userMap.put("name", "ho phuc thai");
 
         mockMvc.perform(patch(AccountController.USER_PATH_ID, user.getId())
+                        .with(httpBasic("user1", "password"))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userMap)))
@@ -72,6 +74,8 @@ class AccountControllerTest {
         given(accountService.deleteUserById(any())).willReturn(true);
 
         mockMvc.perform(delete(AccountController.USER_PATH_ID, user.getId())
+                        .with(httpBasic("user1", "password"))
+
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -88,6 +92,7 @@ class AccountControllerTest {
         given(accountService.updateUserById(any(), any())).willReturn(Optional.of(user));
 
         mockMvc.perform(put(AccountController.USER_PATH_ID, user.getId())
+                        .with(httpBasic("user1", "password"))
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -107,6 +112,8 @@ class AccountControllerTest {
                 .willReturn(userServiceImpl.getAllUsers().get(1));
 
         mockMvc.perform(post(AccountController.USER_PATH)
+                        .with(httpBasic("user1", "password"))
+
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
@@ -119,6 +126,8 @@ class AccountControllerTest {
         given(accountService.getAllUsers()).willReturn(userServiceImpl.getAllUsers());
 
         mockMvc.perform(get(AccountController.USER_PATH)
+                        .with(httpBasic("user1", "password"))
+
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -129,7 +138,8 @@ class AccountControllerTest {
     void getByIdNotFound() throws Exception{
         given(accountService.getUserById(any(UUID.class))).willThrow(NotFoundException.class);
 
-        mockMvc.perform(get(AccountController.USER_PATH_ID, UUID.randomUUID()))
+        mockMvc.perform(get(AccountController.USER_PATH_ID, UUID.randomUUID())
+                .with(httpBasic("user1", "password")))
                 .andExpect(status().isNotFound()) ;
     }
 
@@ -140,6 +150,8 @@ class AccountControllerTest {
         given(accountService.getUserById(user.getId())).willReturn(Optional.of(user));
 
         mockMvc.perform(get(AccountController.USER_PATH_ID, user.getId())
+                        .with(httpBasic("user1", "password"))
+
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

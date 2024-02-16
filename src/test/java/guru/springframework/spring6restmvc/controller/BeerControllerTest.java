@@ -163,6 +163,7 @@ class BeerControllerTest {
     }
 
     @Test
+//    tại sao trả về status 500 chưa biết nữa :v
     void testListBeers() throws Exception {
         given(beerService.listBeers(any(), any(), any(), any(), any()))
                 .willReturn(beerServiceImpl.listBeers(null, null, false, null, null));

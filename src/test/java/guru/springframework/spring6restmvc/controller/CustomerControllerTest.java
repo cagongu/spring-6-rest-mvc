@@ -64,6 +64,7 @@ class CustomerControllerTest {
         customerMap.put("name", "Thai");
 
         mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID, customer.getId())
+                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerMap)))

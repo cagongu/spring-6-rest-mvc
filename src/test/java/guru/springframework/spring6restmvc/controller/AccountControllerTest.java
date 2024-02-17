@@ -58,7 +58,7 @@ class AccountControllerTest {
         userMap.put("name", "ho phuc thai");
 
         mockMvc.perform(patch(AccountController.USER_PATH_ID, user.getId())
-                        .with(httpBasic("user1", "password"))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userMap)))
@@ -77,7 +77,7 @@ class AccountControllerTest {
         given(accountService.deleteUserById(any())).willReturn(true);
 
         mockMvc.perform(delete(AccountController.USER_PATH_ID, user.getId())
-                        .with(httpBasic("user1", "password"))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
 
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -95,7 +95,7 @@ class AccountControllerTest {
         given(accountService.updateUserById(any(), any())).willReturn(Optional.of(user));
 
         mockMvc.perform(put(AccountController.USER_PATH_ID, user.getId())
-                        .with(httpBasic("user1", "password"))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -115,7 +115,7 @@ class AccountControllerTest {
                 .willReturn(userServiceImpl.getAllUsers().get(1));
 
         mockMvc.perform(post(AccountController.USER_PATH)
-                        .with(httpBasic("user1", "password"))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
 
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ class AccountControllerTest {
         given(accountService.getAllUsers()).willReturn(userServiceImpl.getAllUsers());
 
         mockMvc.perform(get(AccountController.USER_PATH)
-                        .with(httpBasic("user1", "password"))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
 
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -142,7 +142,7 @@ class AccountControllerTest {
         given(accountService.getUserById(any(UUID.class))).willThrow(NotFoundException.class);
 
         mockMvc.perform(get(AccountController.USER_PATH_ID, UUID.randomUUID())
-                .with(httpBasic("user1", "password")))
+                .with(BeerControllerTest.jwtRequestPostProcessor))
                 .andExpect(status().isNotFound()) ;
     }
 
@@ -153,7 +153,7 @@ class AccountControllerTest {
         given(accountService.getUserById(user.getId())).willReturn(Optional.of(user));
 
         mockMvc.perform(get(AccountController.USER_PATH_ID, user.getId())
-                        .with(httpBasic("user1", "password"))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
 
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

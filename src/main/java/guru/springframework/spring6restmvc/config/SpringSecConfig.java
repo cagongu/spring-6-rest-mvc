@@ -2,7 +2,6 @@ package guru.springframework.spring6restmvc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,9 +14,7 @@ public class SpringSecConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .csrf(httpSecurityCsrfConfigurer ->
-                        httpSecurityCsrfConfigurer.ignoringRequestMatchers("/api/**"));
+                .oauth2ResourceServer(oauth->oauth.jwt(Customizer.withDefaults()));
 
         return http.build();
     }

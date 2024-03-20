@@ -1,0 +1,11 @@
+guru\springframework\spring6restmvc\controller\CustomerControllerTest.class
+guru\springframework\spring6restmvc\controller\CustomerControllerIT.class
+guru\springframework\spring6restmvc\repositories\BeerRepositoryTest.class
+guru\springframework\spring6restmvc\controller\AccountControllerTest.class
+guru\springframework\spring6restmvc\controller\BeerControllerIT.class
+guru\springframework\spring6restmvc\bootstrap\BootstrapDataTest.class
+guru\springframework\spring6restmvc\repositories\CategoryRepositoryTest.class
+guru\springframework\spring6restmvc\repositories\CustomerRepositoryTest.class
+guru\springframework\spring6restmvc\controller\BeerControllerTest.class
+guru\springframework\spring6restmvc\repositories\BeerOrderRepositoryTest.class
+guru\springframework\spring6restmvc\Spring6RestMvcApplicationTests.class

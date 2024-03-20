@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: guru.springframework.spring6restmvc.bootstrap.BootstrapDataTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.548 s -- in guru.springframework.spring6restmvc.bootstrap.BootstrapDataTest

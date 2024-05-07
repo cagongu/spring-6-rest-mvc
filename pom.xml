@@ -8,7 +8,6 @@
         <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-
     <groupId>guru.springframework</groupId>
     <artifactId>spring-6-rest-mvc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -18,7 +17,6 @@
         <java.version>17</java.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,7 +80,6 @@
             <version>${org.mapstruct.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -128,5 +125,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

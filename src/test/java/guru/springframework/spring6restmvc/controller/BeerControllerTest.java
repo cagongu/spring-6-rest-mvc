@@ -28,7 +28,6 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -57,14 +56,12 @@ class BeerControllerTest {
     ArgumentCaptor<BeerDTO> beerArgumentCaptor;
 
     public static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor jwtRequestPostProcessor =
-            jwt().jwt(jwt -> {
-                jwt.claims(claims -> {
-                            claims.put("scope", "message-read");
-                            claims.put("scope", "message-write");
-                        })
-                        .subject("messaging-client")
-                        .notBefore(Instant.now().minusSeconds(5l));
-            });
+            jwt().jwt(jwt -> jwt.claims(claims -> {
+                        claims.put("scope", "message-read");
+                        claims.put("scope", "message-write");
+                    })
+                    .subject("messaging-client")
+                    .notBefore(Instant.now().minusSeconds(5L)));
 
 
     @Test

@@ -1,5 +1,6 @@
 package guru.springframework.spring6restmvc.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import guru.springframework.spring6restmvc.model.BeerStyle;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

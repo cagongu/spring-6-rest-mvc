@@ -6,6 +6,8 @@ import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.model.BeerStyle;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 @Service
 @Primary
 @AllArgsConstructor
@@ -28,15 +31,18 @@ public class BeerServiceJPA implements BeerService {
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_PAGE_SIZE = 25;
 
+    @Cacheable(cacheNames = "beerCache", key = "#id")
     @Override
     public Optional<BeerDTO> getBearById(UUID id) {
+        log.info("Get Beer by Id - in service");
+
         return Optional.ofNullable(beerMapper.beerToBeerDto(repository.findById(id)
                 .orElse(null)));
     }
 
     @Override
     public Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle,
-                                  Boolean showInventory, Integer pageNumber, Integer pageSize) {
+                                   Boolean showInventory, Integer pageNumber, Integer pageSize) {
 
         PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);
 

@@ -40,9 +40,11 @@ public class BeerServiceJPA implements BeerService {
                 .orElse(null)));
     }
 
+    @Cacheable(cacheNames = "beerListCache")
     @Override
     public Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle,
                                    Boolean showInventory, Integer pageNumber, Integer pageSize) {
+        log.info("List Beers - in service");
 
         PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);
 

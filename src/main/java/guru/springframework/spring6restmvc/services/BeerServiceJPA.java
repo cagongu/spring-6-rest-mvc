@@ -110,8 +110,9 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public BeerDTO saveNewBeer(BeerDTO beer) {
-        cacheManager.getCache("beerListCache").clear();
-
+        if (cacheManager.getCache("beerListCache") != null) {
+            cacheManager.getCache("beerListCache").clear();
+        };
         return beerMapper.beerToBeerDto(repository.save(beerMapper.beerDtoToBeer(beer)));
     }
 
@@ -149,6 +150,13 @@ public class BeerServiceJPA implements BeerService {
     private void clearCache(UUID beerId) {
         cacheManager.getCache("beerCache").evict(beerId);
         cacheManager.getCache("beerListCache").clear();
+        if (cacheManager.getCache("beerCache") != null ){
+            cacheManager.getCache("beerCache").evict(beerId);
+        }
+
+        if (cacheManager.getCache("beerListCache") != null) {
+            cacheManager.getCache("beerListCache").clear();
+        }
     }
 
     @Override

@@ -1,7 +1,10 @@
 package guru.springframework.spring6restmvc.services;
 
 import guru.springframework.spring6restmvc.entities.Beer;
-import guru.springframework.spring6restmvc.event.BeerCreatedEvent;
+import guru.springframework.spring6restmvc.events.BeerCreatedEvent;
+import guru.springframework.spring6restmvc.events.BeerDeletedEvent;
+import guru.springframework.spring6restmvc.events.BeerPatchedEvent;
+import guru.springframework.spring6restmvc.events.BeerUpdatedEvent;
 import guru.springframework.spring6restmvc.mappers.BeerMapper;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.model.BeerStyle;
@@ -59,12 +62,12 @@ public class BeerServiceJPA implements BeerService {
 
         Page<Beer> beerPage;
 
-        if (StringUtils.hasText(beerName) && beerStyle == null) {
-            beerPage = listBeerByName(beerName, pageRequest);
-        } else if (!StringUtils.hasText(beerName) && beerStyle != null) {
-            beerPage = listBeerByStyle(beerStyle, pageRequest);
-        } else if (StringUtils.hasText(beerName) && beerStyle != null) {
-            beerPage = listBeerByNameAndStyle(beerName, beerStyle, pageRequest);
+        if(StringUtils.hasText(beerName) && beerStyle == null) {
+            beerPage = listBeersByName(beerName, pageRequest);
+        } else if (!StringUtils.hasText(beerName) && beerStyle != null){
+            beerPage = listBeersByStyle(beerStyle, pageRequest);
+        } else if (StringUtils.hasText(beerName) && beerStyle != null){
+            beerPage = listBeersByNameAndStyle(beerName, beerStyle, pageRequest);
         } else {
             beerPage = repository.findAll(pageRequest);
         }
@@ -101,15 +104,16 @@ public class BeerServiceJPA implements BeerService {
         return PageRequest.of(queryPageNumber, queryPageSize, sort);
     }
 
-    public Page<Beer> listBeerByNameAndStyle(String beerName, BeerStyle beerStyle, Pageable pageable) {
-        return repository.findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle("%" + beerName + "%", beerStyle, pageable);
+    private Page<Beer> listBeersByNameAndStyle(String beerName, BeerStyle beerStyle, Pageable pageable) {
+        return repository.findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle("%" + beerName + "%",
+                beerStyle, pageable);
     }
 
-    public Page<Beer> listBeerByStyle(BeerStyle beerList, Pageable pageable) {
-        return repository.findAllByBeerStyle(beerList, pageable);
+    public Page<Beer> listBeersByStyle(BeerStyle beerStyle, Pageable pageable) {
+        return repository.findAllByBeerStyle(beerStyle, pageable);
     }
 
-    public Page<Beer> listBeerByName(String beerName, Pageable pageable) {
+    public Page<Beer> listBeersByName(String beerName, Pageable pageable){
         return repository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%", pageable);
     }
 
@@ -140,8 +144,15 @@ public class BeerServiceJPA implements BeerService {
             foundBeer.setUpc(beer.getUpc());
             foundBeer.setPrice(beer.getPrice());
             foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
+
+            val savedBeer = repository.save(foundBeer);
+
+            val auth = SecurityContextHolder.getContext().getAuthentication();
+
+            applicationEventPublisher.publishEvent(new BeerUpdatedEvent(savedBeer, auth));
+
             atomicReference.set(Optional.of(beerMapper
-                    .beerToBeerDto(repository.save(foundBeer))));
+                    .beerToBeerDto(savedBeer)));
         }, () -> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
@@ -153,6 +164,9 @@ public class BeerServiceJPA implements BeerService {
         clearCache(id);
 
         if (repository.existsById(id)) {
+            val auth = SecurityContextHolder.getContext().getAuthentication();
+
+            applicationEventPublisher.publishEvent(new BeerDeletedEvent(Beer.builder().id(id).build(), auth));
             repository.deleteById(id);
             return true;
         }
@@ -196,7 +210,14 @@ public class BeerServiceJPA implements BeerService {
             if (StringUtils.hasText(beer.getUpc())) {
                 foundBeer.setUpc(beer.getUpc());
             }
-            atomicReference.set(Optional.of(beerMapper.beerToBeerDto(repository.save(foundBeer))));
+
+            val savedBeer = repository.save(foundBeer);
+            val auth = SecurityContextHolder.getContext().getAuthentication();
+
+            applicationEventPublisher.publishEvent(new BeerPatchedEvent(savedBeer, auth));
+
+            atomicReference.set(Optional.of(beerMapper
+                    .beerToBeerDto(savedBeer)));
         }, () -> atomicReference.set(Optional.empty()));
         return atomicReference.get();
     }

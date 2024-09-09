@@ -1,6 +1,6 @@
 package guru.springframework.spring6restmvc.listener;
 
-import guru.springframework.spring6restmvc.event.BeerCreatedEvent;
+import guru.springframework.spring6restmvc.events.*;
 import guru.springframework.spring6restmvc.mappers.BeerMapper;
 import guru.springframework.spring6restmvc.repositories.BeerAuditRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +20,26 @@ public class BeerCreatedListener {
 
     @Async
     @EventListener
-    public void listen(BeerCreatedEvent event) {
+    public void listen(BeerEvent event) {
         val beerAudit = beerMapper.beerToBeerAudit(event.getBeer());
-        beerAudit.setAuditEventType("BEER_CREATED");
+
+        String eventType = null;
+
+        switch (event) {
+            case BeerCreatedEvent beerCreatedEvent -> eventType = "BEER_CREATED";
+            case BeerPatchedEvent beerPatchedEvent -> eventType = "BEER_PATCHED";
+            case BeerUpdatedEvent beerUpdatedEvent -> eventType = "BEER_UPDATED";
+            case BeerDeletedEvent beerDeletedEvent -> eventType = "BEER_DELETED";
+            default -> eventType = "UNKNOWN";
+        }
+
+        beerAudit.setAuditEventType(eventType);
 
         if (event.getAuthentication() != null && event.getAuthentication().getName() != null) {
             beerAudit.setPrincipalName(event.getAuthentication().getName());
         }
 
         val savedBeerAudit = beerAuditRepository.save(beerAudit);
-        log.debug("Beer Audit Saved: " + savedBeerAudit.getId());
+        log.debug("Beer Audit Saved: " + eventType + savedBeerAudit.getId());
     }
 }

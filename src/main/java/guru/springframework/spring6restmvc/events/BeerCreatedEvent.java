@@ -1,4 +1,4 @@
-package guru.springframework.spring6restmvc.event;
+package guru.springframework.spring6restmvc.events;
 
 import guru.springframework.spring6restmvc.entities.Beer;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 @Setter
 @AllArgsConstructor
 @Builder
-public class BeerCreatedEvent {
+public class BeerCreatedEvent implements BeerEvent{
 
     private Beer beer;
 

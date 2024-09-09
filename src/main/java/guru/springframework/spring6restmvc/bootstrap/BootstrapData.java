@@ -7,7 +7,6 @@ import guru.springframework.spring6restmvc.model.BeerStyle;
 import guru.springframework.spring6restmvc.repositories.BeerOrderRepository;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import guru.springframework.spring6restmvc.repositories.CustomerRepository;
-import guru.springframework.spring6restmvc.repositories.UserRepository;
 import guru.springframework.spring6restmvc.services.BeerCSVService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -27,7 +26,6 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class BootstrapData implements CommandLineRunner {
-    private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final BeerRepository beerRepository;
     private final BeerCSVService beerCSVService;
@@ -36,7 +34,6 @@ public class BootstrapData implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-        loadUserData();
         loadCustomerData();
         loadCsvData();
         loadBeerData();
@@ -112,22 +109,6 @@ public class BootstrapData implements CommandLineRunner {
                         .quantityOnHand(beerCSVRecord.getCount())
                         .build());
             });
-        }
-    }
-
-    private void loadUserData() {
-        if (userRepository.count() == 0) {
-            Account account1 = Account.builder()
-                    .name("thai")
-                    .years(2003)
-                    .build();
-
-            Account account2 = Account.builder()
-                    .name("thai2")
-                    .years(2003)
-                    .build();
-            userRepository.save(account1);
-            userRepository.save(account2);
         }
     }
 

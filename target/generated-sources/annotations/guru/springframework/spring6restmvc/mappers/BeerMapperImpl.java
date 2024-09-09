@@ -1,13 +1,14 @@
 package guru.springframework.spring6restmvc.mappers;
 
 import guru.springframework.spring6restmvc.entities.Beer;
+import guru.springframework.spring6restmvc.entities.BeerAudit;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-09-08T14:59:55+0700",
+    date = "2024-09-09T14:07:24+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.4 (Amazon.com Inc.)"
 )
 @Component
@@ -53,5 +54,26 @@ public class BeerMapperImpl implements BeerMapper {
         beerDTO.updateDate( beer.getUpdateDate() );
 
         return beerDTO.build();
+    }
+
+    @Override
+    public BeerAudit beerToBeerAudit(Beer beer) {
+        if ( beer == null ) {
+            return null;
+        }
+
+        BeerAudit.BeerAuditBuilder beerAudit = BeerAudit.builder();
+
+        beerAudit.id( beer.getId() );
+        beerAudit.version( beer.getVersion() );
+        beerAudit.beerName( beer.getBeerName() );
+        beerAudit.beerStyle( beer.getBeerStyle() );
+        beerAudit.upc( beer.getUpc() );
+        beerAudit.quantityOnHand( beer.getQuantityOnHand() );
+        beerAudit.price( beer.getPrice() );
+        beerAudit.createdDate( beer.getCreatedDate() );
+        beerAudit.updateDate( beer.getUpdateDate() );
+
+        return beerAudit.build();
     }
 }

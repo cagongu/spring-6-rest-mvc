@@ -23,6 +23,7 @@ guru\springframework\spring6restmvc\model\CustomerDTO$CustomerDTOBuilder.class
 guru\springframework\spring6restmvc\model\AccountDTO$AccountDTOBuilder.class
 guru\springframework\spring6restmvc\event\BeerCreatedEvent$BeerCreatedEventBuilder.class
 guru\springframework\spring6restmvc\listener\BeerCreatedListener.class
+guru\springframework\spring6restmvc\entities\BeerAudit$BeerAuditBuilder.class
 guru\springframework\spring6restmvc\services\AccountServiceJPA.class
 guru\springframework\spring6restmvc\services\BeerServiceJPA.class
 guru\springframework\spring6restmvc\config\LogbookConfig.class
@@ -36,6 +37,7 @@ guru\springframework\spring6restmvc\controller\CustomerController.class
 guru\springframework\spring6restmvc\entities\Beer.class
 guru\springframework\spring6restmvc\model\BeerCSVRecord.class
 guru\springframework\spring6restmvc\event\BeerCreatedEvent.class
+guru\springframework\spring6restmvc\entities\BeerAudit.class
 guru\springframework\spring6restmvc\services\BeerServiceImpl.class
 guru\springframework\spring6restmvc\entities\BeerOrder$BeerOrderBuilder.class
 guru\springframework\spring6restmvc\bootstrap\BootstrapData.class
@@ -43,6 +45,7 @@ guru\springframework\spring6restmvc\mappers\CustomerMapper.class
 guru\springframework\spring6restmvc\controller\CustomErrorController.class
 guru\springframework\spring6restmvc\services\CustomerServiceImpl.class
 guru\springframework\spring6restmvc\services\BeerCSVService.class
+guru\springframework\spring6restmvc\config\TaskConfig.class
 guru\springframework\spring6restmvc\controller\AccountController.class
 guru\springframework\spring6restmvc\entities\Customer$CustomerBuilder.class
 guru\springframework\spring6restmvc\model\BeerDTO.class

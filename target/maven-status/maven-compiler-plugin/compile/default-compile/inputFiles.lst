@@ -23,6 +23,7 @@ D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframew
 D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\entities\BeerOrderShipment.java
 D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\services\BeerCSVService.java
 D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\controller\CustomErrorController.java
+D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\entities\BeerAudit.java
 D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\controller\CustomerController.java
 D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\model\AccountDTO.java
 D:\LEARN\JAVA\SpringFramework6\spring-6-rest-mvc\src\main\java\guru\springframework\spring6restmvc\repositories\CustomerRepository.java

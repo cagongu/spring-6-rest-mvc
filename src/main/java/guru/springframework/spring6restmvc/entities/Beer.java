@@ -41,7 +41,7 @@ public class Beer {
     private String beerName;
 
     @NotNull
-//    @JdbcTypeCode(value = SqlTypes.SMALLINT)
+    @JdbcTypeCode(value = SqlTypes.SMALLINT)
     private BeerStyle beerStyle;
 
     @NotNull
@@ -53,11 +53,8 @@ public class Beer {
     @NotNull
     private BigDecimal price;
 
-    @CreationTimestamp
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDate;
+    @OneToMany(mappedBy = "beer")
+    private Set<BeerOrderLine> beerOrderLines;
 
     @Builder.Default
     @ManyToMany
@@ -76,4 +73,9 @@ public class Beer {
         category.getBeers().remove(category);
     }
 
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    private LocalDateTime updateDate;
 }

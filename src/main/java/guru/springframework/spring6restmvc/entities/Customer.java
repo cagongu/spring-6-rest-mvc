@@ -27,8 +27,6 @@ public class Customer {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    @NotNull
-    @NotBlank
     @Size(max = 50)
     @Column(length = 50)
     private String name;

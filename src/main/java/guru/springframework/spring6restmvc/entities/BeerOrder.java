@@ -25,7 +25,7 @@ public class BeerOrder {
         this.lastModifiedDate = lastModifiedDate;
         this.customerRef = customerRef;
         this.setCustomer(customer);
-        this.beerOrderLines = beerOrderLines;
+        this.setBeerOrderLines(beerOrderLines);
         this.setBeerOrderShipment(beerOrderShipment);
     }
 
@@ -55,16 +55,20 @@ public class BeerOrder {
     private Customer customer;
 
     public void setCustomer(Customer customer) {
-        this.customer = customer;
-        customer.getBeerOrders().add(this);
+        if(customer != null){
+            this.customer = customer;
+            customer.getBeerOrders().add(this);
+        }
     }
 
     public void setBeerOrderShipment(BeerOrderShipment beerOrderShipment) {
-        this.beerOrderShipment = beerOrderShipment;
-        beerOrderShipment.setBeerOrder(this);
+        if(beerOrderShipment != null){
+            this.beerOrderShipment = beerOrderShipment;
+            beerOrderShipment.setBeerOrder(this);
+        }
     }
 
-    @OneToMany(mappedBy = "beerOrder")
+    @OneToMany(mappedBy = "beerOrder", cascade = CascadeType.ALL)
     private Set<BeerOrderLine> beerOrderLines;
 
     @OneToOne(cascade = CascadeType.PERSIST)

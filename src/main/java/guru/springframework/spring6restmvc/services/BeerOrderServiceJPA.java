@@ -71,7 +71,4 @@ public class BeerOrderServiceJPA implements BeerOrderService {
         return beerOrderRepository.findAll(pageRequest).map(beerOrderMapper::beerOrderToBeerOrderDto);
     }
 
-    {
-        return null;
-    }
 }

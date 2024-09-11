@@ -10,9 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
 @Builder
-@AllArgsConstructor
+@Data
 public class BeerDTO {
     private UUID id;
     private Integer version;
@@ -33,4 +32,5 @@ public class BeerDTO {
     private BigDecimal price;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
+
 }

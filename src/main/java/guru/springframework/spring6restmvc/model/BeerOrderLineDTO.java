@@ -14,7 +14,6 @@ public class BeerOrderLineDTO {
 
     private Long version;
     private Timestamp createdDate;
-
     private Timestamp lastModifiedDate;
 
     private BeerDTO beer;

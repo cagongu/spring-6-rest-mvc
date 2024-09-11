@@ -10,6 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class BeerOrderLineCreateDTO {
+
     @NotNull
     private UUID beerId;
 

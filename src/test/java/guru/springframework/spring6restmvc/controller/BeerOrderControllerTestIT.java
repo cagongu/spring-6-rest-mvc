@@ -6,6 +6,7 @@ import guru.springframework.spring6restmvc.model.*;
 import guru.springframework.spring6restmvc.repositories.BeerOrderRepository;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import guru.springframework.spring6restmvc.repositories.CustomerRepository;
+import jakarta.transaction.Transactional;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,7 @@ class BeerOrderControllerTestIT {
                 .build();
     }
 
+    @Transactional
     @Test
     void testUpdateOrder() throws Exception {
         val beerOrder = beerOrderRepository.findAll().get(0);

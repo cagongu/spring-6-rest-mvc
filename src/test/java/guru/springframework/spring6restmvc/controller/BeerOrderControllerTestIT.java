@@ -53,6 +53,22 @@ class BeerOrderControllerTestIT {
                 .build();
     }
 
+    @Test
+    void testDelete() throws Exception {
+        val beerOrder = beerOrderRepository.findAll().get(0);
+
+        mockMvc.perform(delete(BeerOrderController.BEER_ORDER_PATH_ID, beerOrder.getId())
+                        .with(jwtRequestPostProcessor))
+                .andExpect(status().isOk());
+
+        assertTrue(beerOrderRepository.findById(beerOrder.getId()).isEmpty());
+
+        mockMvc.perform(delete(BeerOrderController.BEER_ORDER_PATH_ID, beerOrder.getId())
+                        .with(jwtRequestPostProcessor))
+                .andExpect(status().isNotFound());
+
+    }
+
     @Transactional
     @Test
     void testUpdateOrder() throws Exception {

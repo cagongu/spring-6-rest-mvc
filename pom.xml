@@ -152,6 +152,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <docker>
+                        <host>tcp://localhost:2375</host>
+                    </docker>
                     <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
                     <excludes>
                         <exclude>

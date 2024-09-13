@@ -61,11 +61,12 @@ public class BeerOrderServiceJPA implements BeerOrderService {
                 foundLine.setOrderQuantity(beerOrderLine.getOrderQuantity());
                 foundLine.setQuantityAllocated(beerOrderLine.getQuantityAllocated());
             } else {
-                order.getBeerOrderLines().add(BeerOrderLine.builder()
-                        .beer(beerRepository.findById(beerOrderLine.getBeerId()).orElseThrow(NotFoundException::new))
-                        .orderQuantity(beerOrderLine.getOrderQuantity())
-                        .quantityAllocated(beerOrderLine.getQuantityAllocated())
-                        .build());
+//                order.getBeerOrderLines().add(BeerOrderLine.builder()
+//                        .beer(beerRepository.findById(beerOrderLine.getBeerId()).orElseThrow(NotFoundException::new))
+//                        .orderQuantity(beerOrderLine.getOrderQuantity())
+//                        .quantityAllocated(beerOrderLine.getQuantityAllocated())
+//                        .build());
+                throw new IllegalArgumentException("BeerId cannot be null when adding a new BeerOrderLine");
             }
         });
 
